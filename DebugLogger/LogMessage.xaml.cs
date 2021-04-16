@@ -18,6 +18,22 @@ namespace DebugLogger
     /// </summary>
     public partial class LogMessage : Page
     {
+        private int count = 0;
+        public int logCount
+        {
+            get
+            {
+                return count;
+            }
+            set
+            {
+                count = value;
+
+                Count.Content = value;
+            }
+        }
+
+
         public LogMessage()
         {
             InitializeComponent();
@@ -26,8 +42,10 @@ namespace DebugLogger
         public LogMessage(int index, string log)
         {
             InitializeComponent();
+
             Index.Content = index;
             LogBox.Content = log;
+            logCount = 1;
         }
     }
 }

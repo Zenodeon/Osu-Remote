@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DebugLogger;
+using ConnectionProtocol;
 
 namespace Osu_Remote
 {
@@ -23,7 +25,7 @@ namespace Osu_Remote
     /// </summary>
     public partial class MainWindow : Window
     {
-        Progress<HttpListenerContext> httpCallback = new Progress<HttpListenerContext>();
+        UDPConnection udpConnection = new UDPConnection();
 
         public MainWindow()
         {
@@ -31,9 +33,9 @@ namespace Osu_Remote
 
             InitializeComponent();
 
-            httpCallback.ProgressChanged += HttpResponse;
+            
 
-            Listener(httpCallback);
+            udpConnection.Listen(IPAddress.Any);
         }
 
         private void OnClosingWindow(object sender, CancelEventArgs e)
@@ -41,26 +43,14 @@ namespace Osu_Remote
             DLog.Close();
         }
 
-        private void Listener(IProgress<HttpListenerContext> progress)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Task.Run(() =>
-            {
-                HttpListener listener = new HttpListener();
-
-                string prefixes = "http://+:8080/osu_test/";
-
-                listener.Prefixes.Add(prefixes);
-                listener.Start();
-
-                HttpListenerContext context = listener.GetContext();
-
-                progress.Report(context);
-            });
+            udpConnection.StopListening();
         }
 
-        private void HttpResponse(object sender, HttpListenerContext e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            DLog.Log("working");
+            udpConnection.Listen(IPAddress.Any);
         }
     }
 }

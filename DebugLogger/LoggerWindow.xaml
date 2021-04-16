@@ -8,11 +8,15 @@
         Title="LoggerWindow" Height="300" Width="700"
         Background="#1c1c1c"
         WindowStartupLocation="Manual" Top="540" Left="1100"
+        SizeChanged="Window_SizeChanged"
         >
     <Grid>
         <Button Content="Clear" Height="20" VerticalAlignment="Bottom" Width="auto" Background="#2d2d30" Foreground="White" BorderThickness="0" Click="Button_Click"/>
-        <ListBox Name="LogList" Height="auto" Width="auto" Margin="0 0 0 20" Background="#1c1c1c" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-    
+        <ListBox Name="LogList" Height="auto" Width="auto" Margin="0 0 0 20" Background="#1c1c1c" BorderThickness="0" 
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 />
+
 
     </Grid>
 </Window>

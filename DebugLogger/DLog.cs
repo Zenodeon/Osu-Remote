@@ -25,7 +25,7 @@ namespace DebugLogger
         public static void Log(string log)
         {
             if (logWindow != null)
-                logWindow.NewLog(log);
+                logWindow.ReportLog(log);
         }
     }
 }

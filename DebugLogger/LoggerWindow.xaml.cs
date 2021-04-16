@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DebugLogger
 {
@@ -17,7 +18,9 @@ namespace DebugLogger
     /// </summary>
     public partial class LoggerWindow : Window
     {
-        private int logCount = 0;
+        private int logWindowCount = 0;
+
+        Dictionary<string, Frame> logBase = new Dictionary<string, Frame>();
 
         public LoggerWindow()
         {
@@ -27,18 +30,58 @@ namespace DebugLogger
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             LogList.Items.Clear();
-            logCount = 0;
+            logBase.Clear();
+            logWindowCount = 0;
         }
 
-        public void NewLog(string log)
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Frame frame = new Frame();
-            frame.Width = Width;
-
-            LogMessage message = new LogMessage(logCount++, log);
-            frame.Content = message;
-
-            LogList.Items.Add(frame);
+            UpdateLogWindowWidth();
         }
+
+        private void UpdateLogWindowWidth()
+        {
+            foreach(KeyValuePair<string, Frame> key in logBase)
+            {
+                Frame frame = key.Value;
+                LogMessage logMessage = (LogMessage)frame.Content;
+
+                frame.Width = logMessage.Width = LogList.ActualWidth - 10;
+            }
+        }
+
+        public void ReportLog(string log)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                NewLog(log);
+            });
+        }
+
+        private void NewLog(string log)
+        {
+            if (logBase.ContainsKey(log))
+            {
+                LogMessage logMessage = (LogMessage)logBase[log].Content;
+
+                logMessage.logCount++;
+            }
+            else
+            {
+                Frame frame = new Frame();
+
+                LogMessage logMessage = new LogMessage(logWindowCount++, log);
+
+                frame.Width = logMessage.Width = LogList.ActualWidth - 10;
+
+                frame.Content = logMessage;
+
+                LogList.Items.Add(frame);
+
+                logBase.Add(log, frame);
+
+                LogList.ScrollIntoView(frame);
+            }
+        } 
     }
 }

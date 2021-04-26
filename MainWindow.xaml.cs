@@ -52,5 +52,19 @@ namespace Osu_Remote
         {
             udpConnection.Listen(IPAddress.Any);
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 64);
+            var client = new UdpClient(endPoint);
+
+            string data = "bruh";
+
+            client.Connect(endPoint);
+
+            client.Send(Encoding.ASCII.GetBytes(data), data.Length); 
+
+            client.Close();
+        }
     }
 }

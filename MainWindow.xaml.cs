@@ -55,8 +55,8 @@ namespace Osu_Remote
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var endPoint = new IPEndPoint(IPAddress.Parse("192.168.100.100"), 64);
-            var client = new UdpClient(endPoint);
+            var endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 60);
+            var client = new UdpClient();
 
             string data = "bruh";
 

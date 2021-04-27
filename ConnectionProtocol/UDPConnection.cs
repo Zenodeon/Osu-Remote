@@ -11,7 +11,7 @@ namespace ConnectionProtocol
 {
     public class UDPConnection
     {
-        public int defaultPort { get; private set; } = 64;
+        public int defaultPort { get; private set; } = 60;
 
 
         private static CancellationTokenSource CTS = new CancellationTokenSource();

@@ -74,7 +74,7 @@ namespace ConnectionProtocol
 
                     if (receiveBytes.Buffer.Length > 0)
                     {
-                        DLog.Log("Hi");
+                        DLog.Log(Encoding.ASCII.GetString(receiveBytes.Buffer));
                     }
                 }
             }

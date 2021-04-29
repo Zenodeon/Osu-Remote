@@ -11,6 +11,8 @@
         <Button Content="Start Listening" HorizontalAlignment="Left" Margin="50,41,0,0" VerticalAlignment="Top" Height="31" Width="102" Click="Button_Click_1"/>
         <Button Content="Stop Listening" HorizontalAlignment="Left" Margin="50,82,0,0" VerticalAlignment="Top" Height="31" Width="102" Click="Button_Click"/>
         <Button Content="Send UDP" HorizontalAlignment="Left" Margin="50,118,0,0" VerticalAlignment="Top" Height="31" Width="102" Click="Button_Click_2"/>
+        <Button Content="Simulate" HorizontalAlignment="Left" Margin="50,154,0,0" VerticalAlignment="Top" Height="31" Width="102" Click="SKey"/>
+        <TextBox HorizontalAlignment="Left" Height="159" Margin="304,185,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="377"/>
 
     </Grid>
 </Window>

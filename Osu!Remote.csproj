@@ -6,5 +6,4 @@
     <RootNamespace>Osu_Remote</RootNamespace>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
 </Project>

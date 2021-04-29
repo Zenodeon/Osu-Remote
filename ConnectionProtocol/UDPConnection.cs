@@ -11,13 +11,10 @@ namespace ConnectionProtocol
 {
     public class UDPConnection
     {
-        public int defaultPort { get; private set; } = 60;
-
+        public int defaultPort { get; private set; } = 64;
 
         private static CancellationTokenSource CTS = new CancellationTokenSource();
         private static CancellationToken CT = CTS.Token;
-
-        private Task listening;
 
         private bool _listen = false;
 
@@ -74,7 +71,9 @@ namespace ConnectionProtocol
 
                     if (receiveBytes.Buffer.Length > 0)
                     {
-                        DLog.Log(Encoding.ASCII.GetString(receiveBytes.Buffer));
+                        string data = Encoding.ASCII.GetString(receiveBytes.Buffer);
+
+                        DLog.Log(data));
                     }
                 }
             }
@@ -82,8 +81,6 @@ namespace ConnectionProtocol
             {
                 client.Close();
             }
-
-
         }
 
         public void StopListening()

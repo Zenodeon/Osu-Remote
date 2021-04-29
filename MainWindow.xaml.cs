@@ -26,20 +26,18 @@ namespace Osu_Remote
     public partial class MainWindow : Window
     {
         UDPConnection udpConnection = new UDPConnection();
-
+       
         public MainWindow()
         {
             DLog.Instantiate();
 
             InitializeComponent();
 
-            
-
             udpConnection.Listen(IPAddress.Any);
         }
 
         private void OnClosingWindow(object sender, CancelEventArgs e)
-        {
+        { 
             DLog.Close();
         }
 
@@ -65,6 +63,10 @@ namespace Osu_Remote
             client.Send(Encoding.ASCII.GetBytes(data), data.Length); 
 
             client.Close();
+        }
+
+        private void SKey(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using DebugLogger;
+using Osu_Remote;
 
 namespace ConnectionProtocol
 {
@@ -67,13 +68,16 @@ namespace ConnectionProtocol
             {
                 while (listen)
                 {
+                    
+
                     UdpReceiveResult receiveBytes = await client.ReceiveAsync().WithCancellation(CT);
 
                     if (receiveBytes.Buffer.Length > 0)
                     {
                         string data = Encoding.ASCII.GetString(receiveBytes.Buffer);
 
-                        DLog.Log(data));
+                        KeyEmulator.Press(true);
+                        DLog.Log(data);
                     }
                 }
             }

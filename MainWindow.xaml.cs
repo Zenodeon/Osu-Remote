@@ -33,11 +33,16 @@ namespace Osu_Remote
 
             InitializeComponent();
 
+            
+            
+
             udpConnection.Listen(IPAddress.Any);
         }
 
         private void OnClosingWindow(object sender, CancelEventArgs e)
-        { 
+        {
+            KeyEmulator.Press(false);
+
             DLog.Close();
         }
 

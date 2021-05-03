@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using DebugLogger;
-using Osu_Remote;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace ConnectionProtocol
+namespace OsuRemote.Internal.ConnectionProtocol
 {
     public class UDPConnection
     {
@@ -35,49 +36,62 @@ namespace ConnectionProtocol
                 if (!value)
                     CTS.Cancel();
             }
-        } 
-
-        public UDPConnection()
-        {
-
         }
 
-        public async void Listen(IPAddress address)
+        public event EventHandler<TouchState> Touched;
+
+        public async void Listen(string ip = null)
         {
             if (listen)
                 return;
+
+            IPAddress address;
+
+            if (ip != null)
+                address = IPAddress.Parse(ip);
+            else
+                address = IPAddress.Any;
 
             listen = true;
 
             endPoint = new IPEndPoint(address, defaultPort);
             client = new UdpClient(endPoint);
  
-            /*
-            listening = Task.Run(() =>
-            {
-                while (listen)
-                {
-                    byte[] receiveBytes = await client.ReceiveAsync(ref endPoint).WithCancellation(CT);
-                    DLog.Log("Hi");
-                }
-            }, CT);*/
-
             DLog.Log("Listening Starting");
 
             try
             {
                 while (listen)
-                {
-                    
-
+                {                   
                     UdpReceiveResult receiveBytes = await client.ReceiveAsync().WithCancellation(CT);
 
                     if (receiveBytes.Buffer.Length > 0)
                     {
                         string data = Encoding.ASCII.GetString(receiveBytes.Buffer);
 
-                        KeyEmulator.Press(true);
-                        DLog.Log(data);
+                        TouchState touchState = new TouchState();
+
+                        bool phaseSuccess = true;
+
+                        try
+                        {
+                            touchState = JsonConvert.DeserializeObject<TouchState>(data);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            phaseSuccess = false;
+                            DLog.Log(ex.Message);
+                        }
+
+                        if (phaseSuccess)
+                        {
+                            OnTouch(touchState);                           
+                        }
+                        else
+                        {
+                            DLog.Log(data);
+                        }                       
                     }
                 }
             }
@@ -94,6 +108,14 @@ namespace ConnectionProtocol
             CTS.Cancel();
 
             DLog.Log("Listening Closed");
+        }
+
+        protected virtual void OnTouch(TouchState e)
+        {
+            EventHandler<TouchState> handler = Touched;
+
+            if (handler != null)
+                handler(this, e);
         }
     }
     public static class AsyncExtensions

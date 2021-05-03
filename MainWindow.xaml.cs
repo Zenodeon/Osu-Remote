@@ -16,48 +16,45 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DebugLogger;
-using ConnectionProtocol;
+using OsuRemote.Internal;
 
-namespace Osu_Remote
+namespace OsuRemote
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        UDPConnection udpConnection = new UDPConnection();
-       
+        OsuRmtHandler osuRmtHandler = new OsuRmtHandler();
+
         public MainWindow()
         {
             DLog.Instantiate();
 
             InitializeComponent();
 
-            
-            
-
-            udpConnection.Listen(IPAddress.Any);
+            osuRmtHandler.Initialize();
         }
 
         private void OnClosingWindow(object sender, CancelEventArgs e)
         {
-            KeyEmulator.Press(false);
-
+            osuRmtHandler.Close();
             DLog.Close();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            udpConnection.StopListening();
+            osuRmtHandler.StopListening();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            udpConnection.Listen(IPAddress.Any);
+            osuRmtHandler.ListenForInput();
         }
-
+       
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            /*
             var endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 60);
             var client = new UdpClient();
 
@@ -68,7 +65,9 @@ namespace Osu_Remote
             client.Send(Encoding.ASCII.GetBytes(data), data.Length); 
 
             client.Close();
+            */
         }
+        
 
         private void SKey(object sender, RoutedEventArgs e)
         {
